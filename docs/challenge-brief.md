@@ -44,7 +44,7 @@ Source: <https://www.spaceappschallenge.org/2026/challenges/junior-astronaut-mis
 | Signal                   | Where we address it                                                                         |
 | ------------------------ | ------------------------------------------------------------------------------------------- |
 | No free choice           | `design-rules.test.ts` (gain + cost, no dominated choices)                                  |
-| 2-3 resources            | **Deliberately exceeded:** 5 (power, air, water, food, shielding) - see `docs/decisions.md` |
+| 2-3 resources            | **Deliberately exceeded:** 6 (power, oxygen, water, food, radiation dose, waste) - see `docs/decisions.md` |
 | Real data, attributed    | `src/data/*`, Data Sources screen, `RealDataBadge`                                          |
 | Static not shown as live | `meta.isLive: false`; separate labelled LIVE panel                                          |
 | Kid wording              | `docs/content-guidelines.md`, text-length tests                                             |

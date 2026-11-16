@@ -38,7 +38,7 @@ All units are real-world units, but the amounts are **game numbers**, except the
 | Food 🍽️          | kg   | 30    | 40       | -1.5              | 15 or less | 0               |
 | Radiation dose ☢️ | mSv  | 3     | 40       | +0.67 (**REAL**)  | 30 or more | 40              |
 | Waste 💩         | kg   | 40    | 300      | +10               | 240 or more | 300            |
-| Coins 🪙 (science) | -  | 0     | -        | -                 | -          | goal: 100 by Sol 230 |
+| Coins 🪙 (science) | -  | 0     | -        | -                 | -          | goal: 60 by Sol 230 |
 
 Live values are in `src/engine/config.ts`. That file wins if this doc and the code disagree, so update this doc when you change it.
 
@@ -74,7 +74,7 @@ Regular cards are in `src/engine/choices.ts` (14 cards); response cards are in `
 
 ## Win / loss
 
-- **Win:** reach the end of Sol 230 with every meter safe and at least 100 Coins.
+- **Win:** reach the end of Sol 230 with every meter safe and at least 60 Coins.
 - **Loss:** power, oxygen, water or food at 0; radiation at 40 mSv; waste at 300 kg; or the coin goal missed at the end.
 - The debrief teaches the lesson behind the loss reason (`LOSS_MESSAGES` in `src/ui/labels.ts`), the lesson of every card the player used, and one real NASA fact.
 

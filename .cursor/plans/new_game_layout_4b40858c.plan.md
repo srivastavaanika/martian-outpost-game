@@ -76,7 +76,7 @@ isProject: false
 
 Full reasoning in `docs/decisions.md`; live values in code.
 
-- **16 sols**, displayed as Sol 215-230 (`displaySol(sol) = sol + 214`, display only). Science is shown as **Coins**; goal 100.
+- **16 sols**, displayed as Sol 215-230 (`displaySol(sol) = sol + 214`, display only). Science is shown as **Coins**; goal 60.
 - **Six meters in real units** (`METERS` in `src/engine/config.ts`): power (kWh), oxygen (kg), water (kL) and food (kg) fail at 0; radiation dose (mSv) fails at 40 and waste (kg) at 300. Each has a warning level and a kid-friendly tooltip (`src/ui/labels.ts`).
 - **Crew of 10 astronauts** (story text on the landing page; meter amounts are game numbers).
 - **Start values** (2026-11-15 feedback): power 80 kWh, oxygen 250 kg, water 7 kL, food 10 kg, radiation 3 mSv, waste 40 kg. Food was retuned to fit (warning 4 kg, daily -1, max 40) and oxygen daily is -9; see `docs/decisions.md`.
