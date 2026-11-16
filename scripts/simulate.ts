@@ -8,6 +8,7 @@
  */
 import {
   applyChoice,
+  choiceOutlook,
   CHOICES_BY_ID,
   createGame,
   RESOURCE_KEYS,
@@ -30,8 +31,18 @@ function scoreAfter(state: GameState, choiceId: string): number {
   return Math.min(...rooms) * 60 + rooms.reduce((sum, room) => sum + room, 0) * 5 - (scienceNeeded / solsLeft) * 3;
 }
 
+const random: Strategy = (state, rng) =>
+  state.offeredChoiceIds[Math.floor(rng() * state.offeredChoiceIds.length)] as string;
+
 const STRATEGIES: Record<string, Strategy> = {
-  random: (state, rng) => state.offeredChoiceIds[Math.floor(rng() * state.offeredChoiceIds.length)] as string,
+  random,
+  /** A young player: picks a card with the "Fixes ..." tag when there is one, otherwise any card. */
+  fixRed: (state, rng) => {
+    const fixes = state.offeredChoiceIds.filter(
+      (id) => choiceOutlook(state, id, SPACE_WEATHER_EVENTS).helps.length > 0,
+    );
+    return fixes.length > 0 ? random({ ...state, offeredChoiceIds: fixes }, rng) : random(state, rng);
+  },
   coinRush: (state) =>
     [...state.offeredChoiceIds].sort(
       (a, b) => (CHOICES_BY_ID.get(b)?.effects.science ?? 0) - (CHOICES_BY_ID.get(a)?.effects.science ?? 0),

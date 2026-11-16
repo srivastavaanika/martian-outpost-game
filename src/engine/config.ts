@@ -9,7 +9,7 @@ export const RULES = {
   maxSols: 16,
   choicesPerSol: 4,
   /** Science points (shown as Coins) needed by the final sol to complete the mission. */
-  scienceGoal: 100,
+  scienceGoal: 60,
   /** A regular card with at least this much science is a "coin card". */
   coinCardMinScience: 10,
 } as const;
@@ -50,11 +50,14 @@ export interface MeterConfig {
   direction: MeterDirection;
 }
 
+/** Game rule: the recovery card always offered for a meter when it needs one (instead of a random helpful card). */
+export const PRIORITY_RECOVERY_CARD: Partial<Record<ResourceKey, string>> = { oxygen: 'make-oxygen' };
+
 export const METERS: Record<ResourceKey, MeterConfig> = {
-  power: { unit: 'kWh', start: 80, max: 100, daily: -3, warnAt: 45, failAt: 0, direction: 'higher' },
-  oxygen: { unit: 'kg', start: 250, max: 300, daily: -9, warnAt: 60, failAt: 0, direction: 'higher' },
-  water: { unit: 'kL', start: 7, max: 8, daily: -0.25, warnAt: 1.5, failAt: 0, direction: 'higher' },
-  food: { unit: 'kg', start: 10, max: 40, daily: -1, warnAt: 4, failAt: 0, direction: 'higher' },
+  power: { unit: 'kWh', start: 80, max: 100, daily: -2, warnAt: 45, failAt: 0, direction: 'higher' },
+  oxygen: { unit: 'kg', start: 250, max: 300, daily: -9, warnAt: 100, failAt: 0, direction: 'higher' },
+  water: { unit: 'kL', start: 7, max: 8, daily: -0.25, warnAt: 3.5, failAt: 0, direction: 'higher' },
+  food: { unit: 'kg', start: 30, max: 40, daily: -1.5, warnAt: 15, failAt: 0, direction: 'higher' },
   /** The daily dose is the [REAL] Mars surface baseline; the 40 mSv budget is a game number. */
   radiation: {
     unit: 'mSv',
@@ -78,4 +81,4 @@ export const FLARE_EVENT_MIN_X = 3;
 export const FLARE_EVENT_DOSE_MSV = 4;
 
 /** Game-scaled background dose (mSv) on a sol whose strongest flare did not trigger the event. */
-export const FLARE_DOSE_MSV: Record<FlareClass, number> = { C: 0.1, M: 0.5, X: 1 };
+export const FLARE_DOSE_MSV: Record<FlareClass, number> = { C: 0.05, M: 0.25, X: 0.5 };

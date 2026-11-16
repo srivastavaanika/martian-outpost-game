@@ -16,10 +16,17 @@ export default function App() {
     );
   }
 
+  if (screen === 'debrief' && game) {
+    return (
+      <main className="min-h-screen">
+        <DebriefScreen game={game} />
+      </main>
+    );
+  }
+
   return (
     <main className="mx-auto flex min-h-screen max-w-7xl flex-col gap-6 p-3 sm:p-6">
       {screen === 'start' && <LandingScreen />}
-      {screen === 'debrief' && game && <DebriefScreen game={game} />}
       {screen === 'data' && <DataSourcesScreen />}
     </main>
   );

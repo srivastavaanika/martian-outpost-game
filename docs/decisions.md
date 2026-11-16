@@ -2,6 +2,48 @@
 
 Add newest entries at the top. Keep each to a few lines: context, decision, consequence.
 
+## 2026-11-15 - Clean the solar panels gives +25 kWh
+
+- **Context:** after the oxygen fix, power was the tightest meter: about 8.1 kWh lost a sol and its best card (+20) made up 2.5 sols. Power caused most random (50.6%) and fixRed (12.2%) losses.
+- **Decision:** Clean the solar panels +20 to +25 kWh (game number); its costs stay oxygen -5 kg and radiation +0.5 mSv.
+- **Consequence:** one card now makes up about 3.1 sols. Win rates (2000 games, DONKI): random 24.1% to 28.6%, fixRed 49.9% to 54.1%, coin-rush 0.0%, balanced 99.3%.
+
+## 2026-11-15 - Make oxygen from water gives +40 kg
+
+- **Context:** feedback - one resource drains faster than it refills. Measured per sol (fixRed player, 2000 games): oxygen loses about 15 kg (9 breathing, 2.2 from spacewalk cards, 3.8 from events), and its only real refill, Make oxygen from water, gave +20 kg - about 1.3 sols back. Every other meter's best card makes up 2.5 sols or more (power 2.5, radiation 2.8, waste 3.7, water 5, food 8.4).
+- **Decision:** Make oxygen from water +20 to +40 kg (game number); its costs stay power -6 kWh and water -0.3 kL. +30 was also tried (fixRed 47.4%).
+- **Consequence:** one card now makes up about 2.7 sols, in line with power and radiation. Win rates (2000 games, DONKI): random 20.8% to 24.1%, fixRed 42.0% to 49.9%, coin-rush 0.0%, balanced 99.2% to 99.3%. fixRed oxygen losses 2.7% to 0.9%.
+
+## 2026-11-15 - Easier for 7-12 year olds
+
+- **Context:** players were failing most missions. In simulation a child picking cards at random won 2.2%, and one who always fixed red meters won only 2.9% - fixing problems crowded out science, so they missed the 100-coin goal (58% of their losses), or power ran out (25%).
+- **Decision:** coin goal 100 to 60 (still a way to lose; a star rating was considered and turned down). Power daily -3 to -2 kWh. Cards that fix a meter in warning show a "Fixes low Power!" tag, and the back of a card warns when the pick would push a meter into danger or end the mission today, with a "Pick another" button. Both come from the pure `choiceOutlook` in `engine.ts`. The simulator gained a `fixRed` strategy that follows the tags.
+- **Consequence:** win rates (2000 games, DONKI): random 2.2% to 20.8%, fixRed 42.0%, coin-rush 0.0%, balanced 77.1% to 99.2%. The balance targets in `docs/game-design.md` changed to random 15-35%, fixRed 35-60%, coin-rush under 10%, balanced 85% or more.
+
+## 2026-11-15 - Low oxygen always offers Make oxygen from water; end-of-mission stamps
+
+- **Context:** feedback - when oxygen is low the card picker could offer Grow food (+2 kg) instead of the real fix; and a win needed the same big moment as a loss.
+- **Decision:** `PRIORITY_RECOVERY_CARD` in `config.ts` (oxygen: make-oxygen) - whenever oxygen needs a card, that card is offered, even if another card already helps oxygen. `MissionFailed` became `MissionEndStamp`: a gold "Mission Complete" stamp with an emoji confetti burst for a win, the red "Mission Failed" stamp for a loss; both skip motion under reduced motion.
+- **Consequence:** win rates (2000 games, DONKI): random 3.0% to 2.2%, coin-rush 0.0%, balanced 74.4% to 77.1% (oxygen losses 6.0% to 4.3%).
+
+## 2026-11-15 - Higher danger levels, and a card for every meter in danger
+
+- **Context:** feedback - raise the danger (warning) levels of oxygen, water and food, and when several meters are low, offer a card for each of them instead of only the neediest one.
+- **Decision:** warning levels oxygen 60 to 100 kg, water 1.5 to 3.5 kL, food 4 to 15 kg. `offerChoiceIds` now adds a recovery card for every meter in warning (one card can cover two), keeps both response cards, and adds the coin card only if the hand still has a free slot. The hand grows past 4 cards when it must (13% of hands in random play, at most 7); on wide screens the cards share one row.
+- **Consequence:** win rates (2000 games, DONKI): random 4.7% to 3.0%, coin-rush 0.0%, balanced 81.5% to 74.4%. Balanced losses moved from oxygen (13.5% to 6.0%) to missing the coin goal (1.1% to 18.9%): fixing a crisis crowds out science, which is the trade-off we want players to feel.
+
+## 2026-11-15 - Food starts at 30 kg
+
+- **Context:** feedback - the food gauge started nearly empty (10 kg, then 9 kg, out of 40). A 9 kg start with an 18 kg max was tried briefly, then food was set to start at 30 kg.
+- **Decision:** food start 30 kg, max 40 kg (bar starts 75% full like the other meters), warning 4 kg. At -1 kg/sol balanced won 85.8% (over target), so the crew of 10 now eats 1.5 kg a sol. -1.25 gave 76.8%, -2 gave 53.3%.
+- **Consequence:** win rates (2000 games, DONKI): random 4.7%, coin-rush 0.0%, balanced 81.5%. Food causes 3.5% of balanced losses and 26% of random losses; coin-rush now always runs out of power.
+
+## 2026-11-15 - Radiation goes down as fast as it goes up
+
+- **Context:** feedback - the dose climbs fast but the cards that lower it barely move it. In balanced play a mission added about 10.7 mSv of real baseline, 8 mSv of background flare dose (69% of sols in the May 2024 window have a C/M/X flare) and 3.8 mSv from spacewalk cards, while one cleanup card took off only 1-1.5 mSv.
+- **Decision:** two game-number levers; the [REAL] 0.67 mSv/sol baseline is unchanged. Background flare dose halved: C 0.1 to 0.05, M 0.5 to 0.25, X 1 to 0.5 mSv (`FLARE_DOSE_MSV`). Pile soil on the habitat -1 to -3 mSv, power up the storm shelter -1.5 to -4 mSv; their costs stay the same.
+- **Consequence:** one cleanup card now cancels about four sols of dose. Win rates (2000 games, DONKI): random 2.2% to 2.6%, coin-rush 0.0% to 0.0%, balanced 71.1% to 72.4%; balanced average end dose 34.0 to 30.8 mSv. Radiation still never ends a mission on its own.
+
 ## 2026-11-15 - Scene shows visual effects only, no floating numbers
 
 - **Context:** feedback - the numbers flashing in the middle of the picture distract from the animation.

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { applyChoice, createGame } from './engine';
-import type { GameState, SiteId } from './engine';
+import { applyChoice, choiceOutlook, createGame } from './engine';
+import type { ChoiceOutlook, GameState, SiteId } from './engine';
 import { SPACE_WEATHER_EVENTS, SPACE_WEATHER_META } from './data';
 
 type Screen = 'start' | 'playing' | 'debrief' | 'data';
@@ -18,6 +18,7 @@ interface GameStore {
   game: GameState | null;
   startMission: (site: SiteId) => void;
   choose: (choiceId: string) => void;
+  outlook: (choiceId: string) => ChoiceOutlook;
   showDataSources: () => void;
   closeDataSources: () => void;
   restart: () => void;
@@ -42,6 +43,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (!game) return;
     const next = applyChoice(game, choiceId, SPACE_WEATHER_EVENTS);
     set({ game: next, screen: next.status === 'playing' ? 'playing' : 'debrief' });
+  },
+  outlook: (choiceId) => {
+    const { game } = get();
+    return game ? choiceOutlook(game, choiceId, SPACE_WEATHER_EVENTS) : { helps: [], dangers: [], ends: null };
   },
   showDataSources: () => set((s) => ({ screen: 'data', previousScreen: s.screen })),
   closeDataSources: () => set((s) => ({ screen: s.previousScreen })),

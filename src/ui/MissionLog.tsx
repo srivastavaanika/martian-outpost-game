@@ -1,12 +1,13 @@
 import { CHOICES_BY_ID, EVENTS_BY_ID } from '../engine';
 import type { SolReport } from '../engine';
 import { displaySol } from './labels';
+import { HUD_CHIP } from './outpost';
 
 /** `popover` opens the list above a small button, so the one-screen mission layout never grows. */
 export function MissionLog({ history, popover = false }: { history: readonly SolReport[]; popover?: boolean }) {
   if (history.length === 0) return null;
   return (
-    <details className={popover ? 'relative' : 'rounded-2xl bg-slate-900/60 p-4 ring-1 ring-slate-700'}>
+    <details className={popover ? 'relative' : `p-4 ${HUD_CHIP}`}>
       <summary
         className={
           popover

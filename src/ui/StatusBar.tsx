@@ -5,9 +5,9 @@ import { CoinStack } from './Coin';
 import { RealDataBadge } from './RealDataBadge';
 import { ResourceGauge } from './ResourceGauge';
 import type { TooltipAlign } from './ResourceGauge';
+import { HUD_CHIP } from './outpost';
 import { COIN_LABEL, describeImpact, describeSaved, displaySol } from './labels';
 
-const HUD_CHIP = 'rounded-2xl bg-slate-950/65 shadow-lg ring-2 ring-white/15 backdrop-blur-md';
 
 function CoinCounter({ coins }: { coins: number }) {
   const reducedMotion = useReducedMotion();

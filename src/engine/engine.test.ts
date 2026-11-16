@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   applyChoice,
+  choiceOutlook,
   createGame,
   dateForSol,
   helpsMeter,
@@ -135,6 +136,65 @@ describe('offerChoiceIds', () => {
       }
     },
   );
+
+  it('offers a card for every meter in its warning zone, plus all response cards', () => {
+    const pairs = RESOURCE_KEYS.flatMap((a, i) => RESOURCE_KEYS.slice(i + 1).map((b) => [a, b] as const));
+    for (const [a, b] of pairs) {
+      const low = { ...resources, [a]: METERS[a].warnAt, [b]: METERS[b].warnAt };
+      for (const eventId of [CALM_EVENT_ID, FLARE_EVENT_ID, ...RANDOM_EVENT_IDS]) {
+        for (let seed = 1; seed <= 10; seed++) {
+          const offered = offerChoiceIds({ seed, sol: 4, resources: low, event: { ...QUIET, eventId } });
+          const cards = offered.map((id) => CHOICES_BY_ID.get(id)!);
+          expect(new Set(offered).size).toBe(offered.length);
+          expect(offered.length).toBeGreaterThanOrEqual(RULES.choicesPerSol);
+          for (const key of [a, b]) expect(cards.some((c) => helpsMeter(key, c.effects[key] ?? 0)), key).toBe(true);
+          for (const id of EVENTS_BY_ID.get(eventId)?.idealChoiceIds ?? []) expect(offered).toContain(id);
+        }
+      }
+    }
+  });
+
+  it('always offers Make oxygen from water when oxygen needs a card', () => {
+    for (const other of RESOURCE_KEYS) {
+      const low = { ...resources, oxygen: METERS.oxygen.warnAt, [other]: METERS[other].warnAt };
+      for (const eventId of [CALM_EVENT_ID, FLARE_EVENT_ID, ...RANDOM_EVENT_IDS]) {
+        for (let seed = 1; seed <= 10; seed++) {
+          expect(offerChoiceIds({ seed, sol: 4, resources: low, event: { ...QUIET, eventId } })).toContain('make-oxygen');
+        }
+      }
+    }
+  });
+
+  it('drops the coin card to make room when several meters are in warning on an event sol', () => {
+    const low = { ...startingResources(), power: METERS.power.warnAt, radiation: METERS.radiation.warnAt };
+    const offered = offerChoiceIds({ seed: 3, sol: 4, resources: low, event: { ...QUIET, eventId: FLARE_EVENT_ID } });
+    expect(offered).toHaveLength(RULES.choicesPerSol);
+    expect(offered.some((id) => isCoinCard(CHOICES_BY_ID.get(id)!))).toBe(false);
+  });
+});
+
+describe('choiceOutlook', () => {
+  const offered = ['clean-solar-panels', 'rover-expedition', 'science-experiment', 'make-oxygen'];
+  const at = (resources: Partial<GameState['resources']>) =>
+    gameWith({ sol: 2, event: QUIET, offeredChoiceIds: offered, resources: { ...startingResources(), ...resources } });
+
+  it('lists the meters in warning that the card fixes', () => {
+    const game = at({ power: METERS.power.warnAt });
+    expect(choiceOutlook(game, 'clean-solar-panels', NO_WEATHER).helps).toEqual(['power']);
+    expect(choiceOutlook(game, 'science-experiment', NO_WEATHER).helps).toEqual([]);
+  });
+
+  it('warns when the card itself pushes a meter into warning, not when the daily change alone does', () => {
+    const game = at({ oxygen: METERS.oxygen.warnAt + 10 });
+    expect(choiceOutlook(game, 'rover-expedition', NO_WEATHER).dangers).toContain('oxygen');
+    expect(choiceOutlook(game, 'science-experiment', NO_WEATHER).dangers).not.toContain('oxygen');
+  });
+
+  it('says when the card would end the mission', () => {
+    const game = at({ power: 5 });
+    expect(choiceOutlook(game, 'rover-expedition', NO_WEATHER).ends).toBe('power');
+    expect(choiceOutlook(game, 'clean-solar-panels', NO_WEATHER).ends).toBeNull();
+  });
 });
 
 describe('meters', () => {
@@ -167,7 +227,8 @@ describe('applyChoice', () => {
     const effects = CHOICES_BY_ID.get('grow-food')?.effects ?? {};
     const impact = EVENTS_BY_ID.get('pipe-leak')?.impact ?? {};
     for (const key of RESOURCE_KEYS) {
-      const expected = METERS[key].start + (effects[key] ?? 0) + (impact[key] ?? 0) + METERS[key].daily;
+      const cap = (v: number) => Math.min(METERS[key].max, Math.max(0, v));
+      const expected = cap(cap(cap(METERS[key].start + (effects[key] ?? 0)) + (impact[key] ?? 0)) + METERS[key].daily);
       expect(next.resources[key], key).toBeCloseTo(expected, 5);
     }
     expect(next.history[0]?.impactApplied).toEqual(impact);

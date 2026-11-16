@@ -1,5 +1,5 @@
 import { CHOICES, CHOICES_BY_ID } from './choices';
-import { FLARE_DOSE_MSV, FLARE_EVENT_MIN_X, METERS, RULES } from './config';
+import { FLARE_DOSE_MSV, FLARE_EVENT_MIN_X, METERS, PRIORITY_RECOVERY_CARD, RULES } from './config';
 import { CALM_EVENT_ID, EVENTS_BY_ID, FLARE_EVENT_ID, RANDOM_EVENT_IDS } from './events';
 import { createRng, pickDistinct } from './rng';
 import type {
@@ -136,29 +136,40 @@ export function pickEvent(
 
 /**
  * Cards offered on the current sol; deterministic for a given seed, sol, event and resources.
- * Event sols: the event's two response cards, one recovery card for the neediest meter and one coin card.
- * The calm first sol: one recovery card, two other regular cards and one coin card.
+ * Recovery cards: one for every meter in its warning zone (one card may cover several), or one for the
+ * neediest meter when none is in warning. A meter in `PRIORITY_RECOVERY_CARD` always gets that card. Event sols add the event's response cards, the calm first sol
+ * adds other regular cards. A coin card fills a free slot. The hand is `RULES.choicesPerSol` cards, or more
+ * when the warning meters and the response cards need more room.
  */
 export function offerChoiceIds(state: Pick<GameState, 'seed' | 'sol' | 'resources' | 'event'>): string[] {
   const rng = createRng(state.seed * 1000 + state.sol);
   const event = EVENTS_BY_ID.get(state.event.eventId);
-  const needy = neediestMeter(state.resources);
-  const helpful = RECOVERY_CARDS.filter((c) => helpsMeter(needy, c.effects[needy] ?? 0));
-  const [recovery] = pickDistinct(helpful.length > 0 ? helpful : RECOVERY_CARDS, 1, rng);
-  const coinPool =
-    state.event.eventId === 'scientific-discovery' ? COIN_CARDS.filter((c) => c.id !== 'send-data-home') : COIN_CARDS;
-  const [coin] = pickDistinct(coinPool, 1, rng);
-  const picked: Choice[] = [recovery, coin].filter((c): c is Choice => c !== undefined);
+  const warning = RESOURCE_KEYS.filter((key) => isWarning(key, state.resources[key]));
+  const recovery: Choice[] = [];
+  for (const key of warning.length > 0 ? warning : [neediestMeter(state.resources)]) {
+    const priority = CHOICES_BY_ID.get(PRIORITY_RECOVERY_CARD[key] ?? '');
+    if (priority) {
+      if (!recovery.includes(priority)) recovery.push(priority);
+      continue;
+    }
+    if (recovery.some((c) => helpsMeter(key, c.effects[key] ?? 0))) continue;
+    const unused = RECOVERY_CARDS.filter((c) => !recovery.includes(c));
+    const helpful = unused.filter((c) => helpsMeter(key, c.effects[key] ?? 0));
+    recovery.push(...pickDistinct(helpful.length > 0 ? helpful : unused, 1, rng));
+  }
 
   const ideal = (event?.idealChoiceIds ?? [])
     .map((id) => CHOICES_BY_ID.get(id))
     .filter((c): c is Choice => c !== undefined);
-  if (ideal.length > 0) {
-    picked.push(...ideal);
-  } else {
-    picked.push(...pickDistinct(RECOVERY_CARDS.filter((c) => !picked.includes(c)), RULES.choicesPerSol - picked.length, rng));
+  const picked: Choice[] = [...recovery, ...ideal];
+  const coinPool =
+    state.event.eventId === 'scientific-discovery' ? COIN_CARDS.filter((c) => c.id !== 'send-data-home') : COIN_CARDS;
+  if (picked.length < RULES.choicesPerSol) picked.push(...pickDistinct(coinPool, 1, rng));
+  if (ideal.length === 0) {
+    const fill = RECOVERY_CARDS.filter((c) => !picked.includes(c));
+    picked.push(...pickDistinct(fill, Math.max(0, RULES.choicesPerSol - picked.length), rng));
   }
-  return pickDistinct(picked, RULES.choicesPerSol, rng).map((c) => c.id);
+  return pickDistinct(picked, picked.length, rng).map((c) => c.id);
 }
 
 function addToMeters(resources: Resources, effects: Effects, scale = 1): void {
@@ -294,4 +305,36 @@ function clamp(key: ResourceKey, value: number): number {
 
 function round2(value: number): number {
   return Math.round(value * 100) / 100;
+}
+
+/** What a card would do for the player's meters, so the UI can point to fixes and warn before a risky pick. */
+export interface ChoiceOutlook {
+  /** Meters in warning now that the card's own effects improve. */
+  helps: ResourceKey[];
+  /** Meters not in warning now that would be after this sol, and that the card itself makes worse. */
+  dangers: ResourceKey[];
+  /** The reason the mission would end this sol if the card is picked, or null. */
+  ends: LossReason | null;
+}
+
+export function choiceOutlook(
+  state: GameState,
+  choiceId: string,
+  weather: readonly SpaceWeatherEvent[],
+): ChoiceOutlook {
+  const choice = CHOICES_BY_ID.get(choiceId);
+  if (!choice || state.status !== 'playing') return { helps: [], dangers: [], ends: null };
+  const effect = (key: ResourceKey) => choice.effects[key] ?? 0;
+  const next = applyChoice(state, choiceId, weather);
+  return {
+    helps: RESOURCE_KEYS.filter((key) => isWarning(key, state.resources[key]) && helpsMeter(key, effect(key))),
+    dangers: RESOURCE_KEYS.filter(
+      (key) =>
+        effect(key) !== 0 &&
+        !helpsMeter(key, effect(key)) &&
+        !isWarning(key, state.resources[key]) &&
+        isWarning(key, next.resources[key]),
+    ),
+    ends: next.status === 'lost' ? (next.lossReason ?? null) : null,
+  };
 }

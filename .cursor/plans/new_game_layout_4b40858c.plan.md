@@ -1,6 +1,6 @@
 ---
 name: New game layout
-overview: "Source of truth for the Martian Odyssey phased plan and next steps (Phases 0-6). Phases 0 and 1 are done; P1.14 (the 2026-11-15 feedback round) still needs its e2e, build and browser checks. Phase 2 (cues) is next, rescoped for a scene that is a transparent layer over NASA's painting of a Mars base. docs/roadmap-2d.md only points here."
+overview: "Source of truth for the Martian Odyssey phased plan and next steps (Phases 0-6). Phases 0 and 1 are done; P1.14 (the 2026-11-15 feedback round, now including the coin cut) still needs its e2e, build and browser checks. Phase 2 (cues) is next, rescoped twice: the scene is a transparent layer over NASA's painting of a Mars base, and since 2026-11-15 it plays visual effects only (no numbers or text). docs/roadmap-2d.md only points here."
 todos:
   - id: step0-docs
     content: "Step 0: S0.1-S0.2 combined plan, decisions, AGENTS.md rule 2, assets manifest"
@@ -12,10 +12,10 @@ todos:
     content: "Phase 1: P1.1-P1.13 - Phaser bridge, seed/test hook, landing page, one-screen layout over NASA PIA23302, gauges, coins; exit gate"
     status: completed
   - id: p1-14
-    content: "P1.14: feedback round (start values, flip cards, waste card, X3 flare cut-off, labels) - run test:e2e, build and the browser check"
+    content: "P1.14: feedback round (start values, flip cards, waste card, X3 flare cut-off, labels, coins cut to about 0.8x) - run test:e2e, build and the browser check"
     status: pending
   - id: phase2
-    content: "Phase 2: P2.1-P2.10 - pure cues ordered after the card flip, landmark mapping, floating deltas, crew-outside marker, flare cue (Sol 219), overlay effects for 9 events, impact-avoided; exit gate (minimum submission)"
+    content: "Phase 2: P2.1-P2.11 - pure cues, landmark mapping, effects-only scene (deltas, Saved and crew-outside text removed 2026-11-15), flare flash (Sol 219), overlay effects for 9 events, effect playtest, decide how changes are shown outside the scene; exit gate (minimum submission)"
     status: pending
   - id: phase3
     content: "Phase 3: P3.1 (optional)-P3.7 - narration, reduced motion incl. flip, keyboard incl. flip, one-screen responsive layout, touch targets, greyscale; exit gate"
@@ -51,7 +51,7 @@ isProject: false
 | Step 0 - Single source of truth (docs) | 2 / 2 | Done 2026-11-15 |
 | 0 - Baseline, rules, content and rename | 17 / 17 | Done 2026-11-15 |
 | 1 - Bridge, landing page and layout | 13 / 14 | Exit gate passed 2026-11-15; P1.14 (feedback round) open |
-| 2 - Cues: making trade-offs visible | 5 / 9 (P2.4 dropped) | In progress: P2.6, P2.7, P2.9 need the browser check; P2.8 needs a playtest |
+| 2 - Cues: making trade-offs visible | 5 / 9 (P2.4, P2.6 dropped; P2.5, P2.10 superseded) | In progress: P2.7, P2.9 need the browser check; P2.11 needs a decision; P2.8 needs a playtest |
 | 3 - Interaction and accessibility | 0 / 7 (P3.1 optional) | Not started |
 | 4 - Art and real imagery | 1 / 10 (P4.4 = P1.12; P4.5 rescoped) | Not started |
 | 5 - Debrief and data depth | 0 / 6 | Not started |
@@ -67,7 +67,7 @@ isProject: false
 
 1. **The scene is a view, not a rule system.** All rules stay in `src/engine/`. Phaser renders `GameState` and the latest `SolReport`; it never changes meters or coins itself.
 2. **Turn-based stays.** One event and one decision per sol. Animation shows the consequence; it does not replace the decision.
-3. **Every animation is backed by engine output.** Events come from `state.event`; numbers come from `SolReport` (`before`, `after`, `impactApplied`, `avoidedImpact`).
+3. **Every animation is backed by engine output.** Events come from `state.event`; numbers come from `SolReport` (`before`, `after`, `impactApplied`, `avoidedImpact`). Since 2026-11-15 the scene shows no numbers or text: values appear on the gauges, the coin counter, the `EventsPanel` and the mission log.
 4. **Cards remain the accessible way to play.** The canvas is an enhancement; keyboard, screen-reader and Playwright play keep working through the card buttons.
 5. **Mechanics before polish.** Placeholder shapes are fine until Phase 4. The only exception is the outpost picture (P1.12, replaced by NASA's artist's concept in P1.13).
 6. **Honest data.** Units are real, but amounts are **game numbers** unless marked REAL. The REAL items are the 0.67 mSv per sol Mars baseline and the DONKI flare dates and classes. The Data Sources screen and the dial tooltips say so.
@@ -83,9 +83,10 @@ Full reasoning in `docs/decisions.md`; live values in code.
 - **Event-first sols** (`pickEvent`): Sol 215 is calm; a real DONKI flare **above X3** gives Solar Flare Warning (with the bundled data: Sol 219, 220, 223, 224); otherwise one of 8 seeded random events with no repeats. Weaker flares add a background dose (C 0.1, M 0.5, X 1 mSv).
 - **Four cards** (`offerChoiceIds`): the event's 2 response cards, 1 recovery card for the meter with the least room before its warning level, 1 coin card.
 - **Event impact with avoids:** each event has an impact; response cards prevent all, half or none of it and have their own costs.
-- **Content:** 14 regular cards (`src/engine/choices.ts`, including "Melt trash into tiles"), 10 events and 18 response cards (`src/engine/events.ts`). Coin rewards were raised about 1.5x so 100 is reachable. Tables in `docs/game-design.md`; the original draft tables are in the appendix.
+- **Content:** 14 regular cards (`src/engine/choices.ts`, including "Melt trash into tiles"), 10 events and 18 response cards (`src/engine/events.ts`). Coin rewards were raised about 1.5x so 100 is reachable, then cut to about 0.8x of that because coins came too fast (experiment 18, rover 30, send data 24; goal still 100). Tables in `docs/game-design.md`; the original draft tables are in the appendix.
 - **Card flip:** tapping a card flips it to its lesson ("Did you know?"); the choice is applied only when the player taps **Next sol** (or **Finish mission**), so the lesson is always read first.
 - **Rendering:** the outpost picture is an HTML image (a painting, NASA PIA23302); Phaser is a transparent layer over it; Framer Motion animates the landing page, gauges, coins and the card flip. Because the base is a painting, scene cues are **overlay effects anchored to landmarks in the picture**, not drawn modules or walking crew.
+- **Effects-only scene** (2026-11-15 feedback): the scene plays the flare glow and the 9 event effects, and nothing else. No floating numbers, "Saved" or "Crew outside" labels and no flare label over the picture. The cue data in `cues.ts` (values and narration) is kept and tested, so narration (P3.2) or a non-scene change display (P2.11) can use it.
 
 ## Screens
 
@@ -108,7 +109,7 @@ flowchart TB
 - **One screen (`md` and up, no scrolling):** NASA's artist's concept PIA23302 fills the screen; its caption ("a drawing, not a photo") is one subtle line at the bottom right, under the cards. On top of it, `StatusBar` (the only place meters appear):
   - **`ResourceGauge` x6:** icon, value with unit and a segmented fill bar with a striped danger zone (bold red with a white marker for power, oxygen, water and food), a "Danger under/over X" label, `role="meter"`, ⚠️ plus "Low!" / "Too high!" at the warning level. The kid-friendly explanation appears on **hover, keyboard focus and tap**, linked with `aria-describedby`, and notes "game number" except for the REAL radiation baseline. Phones: one compact row at the bottom of the picture; `md` and up: a row with names at the top.
   - **`CoinCounter`:** a pile of SVG gold coins that grows to the goal, plus coins / goal. **`SolCounter`:** "Sol 215", the real date and "📅 Day: 1 of 16". The coins tile is titled "Coins from Science".
-  - Under them, `PhaserGame` and `BaseScene`: a transparent layer with tap areas over the picture, where Phase 2 cues will play.
+  - Under them, `PhaserGame` and `BaseScene`: a transparent layer with tap areas over the picture, where the Phase 2 visual effects play (no text).
 - **Top right, `EventsPanel`:** today's event (icon, title, description, and for flares the real class, date and NASA DONKI label), yesterday's result, `RealDataBadge`, a Data Sources link, and an `aria-live` region.
 - **Bottom:** the heading "What should the crew do today?" (a yellow pill), then today's 4 `ChoiceCard`s. Each flips to its lesson with a Next sol button. Response cards carry a "Handles: ..." tag in text and an icon, never colour alone. Effect chips show units. `MissionLog` is collapsed.
 
@@ -118,7 +119,7 @@ Built in Phase 1 (redesigned in P1.13): `LandingScreen`, `StatusBar` (with `Reso
 
 - **Landmarks, not drawn modules:** the scene is a transparent layer over a painting, so each meter maps to a tap area and an anchor point on a landmark in the picture (habitat, rover, open ground, sky). The original module list stays as the mapping guide: power (solar panels that can fold, battery), oxygen (generator with bubbles), water (tank fill level), food (greenhouse, plants grow or wilt), radiation (storm shelter and crew dosimeter badges), waste (squasher and pile), coins (lab and antenna), plus the rover, the ice drill and the repair bots.
 - **Card animations:** the `animation` field of every card in `choices.ts` and `events.ts`.
-- **Event animations, at the start of the sol:** flare (the sky flashes and the real label shows), dust storm (a dust wall rolls in), greenhouse (plants wilt), pipe leak (drips), dry-ice storm (snow falls), rover in a trap (the rover sinks), drill hits bedrock (the drill sparks), crack in the dome (a crack and an air hiss), discovery (the lab sparkles).
+- **Event animations, at the start of the sol:** flare (the sky flashes; the real class and date show in the `EventsPanel`, not in the scene), dust storm (a dust wall rolls in), greenhouse (plants wilt), pipe leak (drips), dry-ice storm (snow falls), rover in a trap (the rover sinks), drill hits bedrock (the drill sparks), crack in the dome (a crack and an air hiss), discovery (the lab sparkles).
 
 ## Assets
 
@@ -195,26 +196,27 @@ flowchart LR
 - [x] **P1.12** (= P4.4, moved earlier) Real Mars background: Curiosity Mastcam PIA16101 (Mount Sharp, Gale Crater), centre crop, 270 kB WebP. **Check:** credit under the scene and on the Data Sources screen (`src/data/sources.ts`), `docs/data-sources.md` and `docs/assets.md` rows, `public/assets` is 272 kB, no NASA logo. _(2026-11-15)_
 - [x] **P1.13** UI feedback redesign (supersedes the look from P1.4, P1.11 and P1.12; see `docs/decisions.md`): a full-width NASA artist's concept of a Mars base (PIA23302, captioned "a drawing, not a photo"), with the sol, coins and six meters on top of it and nowhere else. `ResourceGauge` (segmented fill bar, striped danger zone, ⚠️ text) replaces `ResourceDial`; coins are SVG gold coins; the scene is a transparent layer with tap areas only. **Check:** `npm run check` (135 tests), `npm run test:e2e` (5 tests, now using `meter-*` test ids) and `npm run build` pass; browser check at 1280x800 and 375x812 with `scrollWidth` 375 and tooltips inside the screen; `public/assets` is 204 KB. _(2026-11-15)_
 - [x] **Exit gate:** a full mission is playable from the landing page to the debrief; `npm run check` (135 tests), `npm run test:e2e` (5 tests) and `npm run build` pass. _(2026-11-15)_
-- [ ] **P1.14** Feedback round after the exit gate (2026-11-15): landing subtitle and "crew of 10" text; Day counter with calendar; "Coins from Science"; picture credit moved under the cards; new start values and retune (food warning 4, daily -1, max 40; oxygen daily -9; coins about 1.5x); bolder danger zones and "Danger under/over" labels on all six gauges; new welcome text; DONKI badge shortened; bigger crew-question heading; card flip with lesson and Next sol; "Melt trash into tiles" card; flare event only above X3. Done so far: `npm run check` (138 tests) and `npm run sim` (balanced 81.2%, random 4.1%, coin-rush 0.0%). **Check:** `npm run test:e2e` (updated to flip and continue) and `npm run build` pass; browser check at 1280x800 with no scrolling and at 375 px, including a flipped card.
+- [ ] **P1.14** Feedback round after the exit gate (2026-11-15): landing subtitle and "crew of 10" text; Day counter with calendar; "Coins from Science"; picture credit moved under the cards; new start values and retune (food warning 4, daily -1, max 40; oxygen daily -9; coins about 1.5x); bolder danger zones and "Danger under/over" labels on all six gauges; new welcome text; DONKI badge shortened; bigger crew-question heading; card flip with lesson and Next sol; "Melt trash into tiles" card; flare event only above X3; coins then cut to about 0.8x (coins came too fast). Done so far: `npm run check` (151 tests) and `npm run sim` after the coin cut (balanced 71.1%, random 2.2%, coin-rush 0.0%; was 81.2% / 4.1% / 0.0%). Balanced sits at the bottom of its 70-85% target: if it needs room, ease oxygen daily use rather than raising coins. **Check:** `npm run test:e2e` (updated to flip and continue) and `npm run build` pass; browser check at 1280x800 with no scrolling and at 375 px, including a flipped card.
 
 ## Phase 2 - Cues: making trade-offs visible
 
 - [x] **P2.1** The `SceneCue` type in `cues.ts`, with no Phaser import. **Check:** `rg phaser src/scene/cues.ts` returns nothing. The module layout moved to the Phaser-free `src/scene/layout.ts` so cues and tests can use it. _(2026-11-15)_
 - [x] **P2.2** Map every regular and response card (32) to a module landmark in the picture. **Check:** a unit test fails if any card is unmapped. `CARD_MODULES` in `cues.ts`; `cues.test.ts` checks all 32. _(2026-11-15)_
-- [x] **P2.3** `cuesForSol` for `event-start`, `resource-delta`, `crew-outside` and `impact-avoided`. The choice is applied after the card flip, so the last sol's `resource-delta` and `impact-avoided` cues play **before** the new sol's `event-start`. **Check:** unit tests for each cue and the order, a flare sol and a random-event sol. 13 tests in `src/scene/cues.test.ts`; played by `src/scene/CuePlayer.ts` (about 2.5 s per sol, cancelled when a new sol arrives). `src/scene/**/*.test.ts` may import `applyChoice`/`createGame` to get real reports (lint exemption for tests only). _(2026-11-15)_
+- [x] **P2.3** `cuesForSol` for `event-start`, `resource-delta`, `crew-outside` and `impact-avoided`. The choice is applied after the card flip, so the last sol's `resource-delta` and `impact-avoided` cues play **before** the new sol's `event-start`. **Check:** unit tests for each cue and the order, a flare sol and a random-event sol. 13 tests in `src/scene/cues.test.ts`; played by `src/scene/CuePlayer.ts` (about 2.5 s per sol, cancelled when a new sol arrives). `src/scene/**/*.test.ts` may import `applyChoice`/`createGame` to get real reports (lint exemption for tests only). _(2026-11-15)_ Since the effects-only change (2026-11-15) `CuePlayer` plays only `event-start` and `flare`, straight away; the other cues stay as tested data.
 - [ ] **P2.4** `shield-absorb` uses `shieldingBlockFraction`. _(dropped 2026-11-15: the shielding resource was replaced by the radiation dose; see P2.10)_
-- [x] **P2.5** Floating deltas with units, for example "+20 kWh ⚡ −5 kg 💨". **Check:** for 3 sols, they match the `MissionLog` before and after values. Unit test over 4 sols compares every delta with `SolReport.before`/`after` (what `MissionLog` shows); text always has a sign, unit and icon. Visual check in the browser still to do with P2.9. _(2026-11-15)_
-- [ ] **P2.6** A "crew outside 🧑‍🚀" marker at the card's landmark for cards that add radiation (rescoped 2026-11-15: walking crew sprites would clash with the painted astronauts). **Check:** "Clean the solar panels" shows the marker; "Recycle the water" does not. Cue unit-tested; the browser check is open.
-- [ ] **P2.7** Flare cue with the real class and date. A weaker background flare gets a light flash and its label only. **Check:** on the first flare-event sol (Sol 219, X3.9) the flash and label appear; on Sol 217 (X1.0 background) only the light flash; on a quiet random-event sol nothing. Cues unit-tested against the real snapshot (Sol 219 X3.9 event, Sol 217 X1.0 background); the browser check is open.
-- [ ] **P2.9** A full-scene overlay effect for each of the 9 non-calm events at the start of the sol (crew reaction dropped 2026-11-15: no crew sprites over the painting). **Check:** a unit test shows each event produces its cue; a screenshot of each event using `?seed`.
-- [x] **P2.10** An `impact-avoided` cue shows how much of the event was stopped, for example "Saved 0.75 kL 💧". **Check:** a unit test asserts it equals `SolReport.avoidedImpact`. _(2026-11-15)_
-- [ ] **P2.8** Scene-only playtest. **Check:** with the effect chips hidden, a tester names the main cost of 3 out of 3 choices from the scene alone; notes in decisions.
+- [x] **P2.5** Floating deltas with units, for example "+20 kWh ⚡ −5 kg 💨". **Check:** for 3 sols, they match the `MissionLog` before and after values. Unit test over 4 sols compares every delta with `SolReport.before`/`after` (what `MissionLog` shows); text always has a sign, unit and icon. Visual check in the browser still to do with P2.9. _(2026-11-15)_ _(superseded 2026-11-15: the numbers flashing in the middle were removed from the scene on feedback; the `resource-delta` cue and its test stay as data for P2.11 and P3.2)_
+- [ ] **P2.6** A "crew outside 🧑‍🚀" marker at the card's landmark for cards that add radiation (rescoped 2026-11-15: walking crew sprites would clash with the painted astronauts). **Check:** "Clean the solar panels" shows the marker; "Recycle the water" does not. _(dropped 2026-11-15: the marker was a text label, and the scene now shows visual effects only; the `crew-outside` cue stays as tested data)_
+- [ ] **P2.7** Flare cue (rescoped 2026-11-15: flash only, no label in the scene). A flare event gets one soft flash; a weaker background flare a faint flash. The real class and date show in the `EventsPanel` (flare event) and the "Yesterday" line (background flare). **Check:** on the first flare-event sol (Sol 219, X3.9) the strong flash plays and the `EventsPanel` reads "X3.9 solar flare on 2024-05-10"; on Sol 217 (X1.0 background) only the faint flash; on a quiet random-event sol no flash. Cues unit-tested against the real snapshot (Sol 219 X3.9 event, Sol 217 X1.0 background); the browser check is open.
+- [ ] **P2.9** A full-scene overlay effect for each of the 9 non-calm events at the start of the sol (crew reaction dropped 2026-11-15: no crew sprites over the painting). Since 2026-11-15 the effect starts as soon as the sol starts (it no longer waits for the floating numbers). **Check:** a unit test shows each event produces its cue; a screenshot of each event using `?seed`, with no text over the picture.
+- [x] **P2.10** An `impact-avoided` cue shows how much of the event was stopped, for example "Saved 0.75 kL 💧". **Check:** a unit test asserts it equals `SolReport.avoidedImpact`. _(2026-11-15)_ _(superseded 2026-11-15: no longer drawn in the scene; the `EventsPanel` "Yesterday" line already says "You saved ...")_
+- [ ] **P2.11** Decide how a choice's result is shown now that the scene has no numbers (new 2026-11-15). Today the gauges and coin counter move, and the "Yesterday" line lists only what the event did and what was saved, not the card's own costs. Options: add the card's changes to the "Yesterday" line; a small change badge on each gauge in the top bar (not in the middle); or nothing beyond the gauges. **Check:** the choice is recorded in `docs/decisions.md`; if something is built, a unit test shows its values equal `SolReport.before`/`after` (reuse `deltaCues`).
+- [ ] **P2.8** Effect playtest (rescoped 2026-11-15: the scene no longer shows costs). **Check:** with the `EventsPanel` covered, a tester names the event from the scene effect alone on 3 of 3 event sols; and with the effect chips hidden, names the main cost of 3 of 3 choices from the gauges and the "Yesterday" line. Notes in decisions.
 - [ ] **Exit gate:** `npm run check` passes with the cue tests. This is the minimum submission; tag the commit here.
 
 ## Phase 3 - Interaction and accessibility
 
 - [ ] **P3.1** _(optional since 2026-11-15: the picture's landmarks do not map cleanly to the six meters; consider tapping a meter tile instead)_ Tapping a module highlights the cards that affect it, with an outline plus "Affects water" text. **Check:** tapping the water tank highlights exactly the offered cards that have a water effect.
-- [ ] **P3.2** The canvas is `aria-hidden`; the `EventsPanel` live region narrates the event and its result. **Check:** the accessibility snapshot has no canvas content, and VoiceOver reads the narration.
+- [ ] **P3.2** The canvas is `aria-hidden`; the `EventsPanel` live region narrates the event and its result. The cue `narration` strings in `cues.ts` are ready to reuse (they are no longer drawn anywhere). **Check:** the accessibility snapshot has no canvas content, and VoiceOver reads the narration.
 - [ ] **P3.3** Reduced motion covers the landing page, the card flip and the scene. **Check:** with it emulated, no tweens play and the end states still show.
 - [ ] **P3.4** Keyboard-only play, including the gauge tooltips and the card flip (focus moves to Next sol). **Check:** the full mission works with Tab, Enter and Space, with a visible focus ring.
 - [ ] **P3.5** Responsive one-screen layout (cards over the picture on `md` and up; picture, then event and cards on phones). **Check:** screenshots at 375x812 and 1280x800; `scrollWidth <= 375`.
@@ -274,6 +276,8 @@ flowchart LR
 - **Real units read as real data:** the tooltips and the Data Sources screen say "game numbers in real units"; only the REAL items are tagged REAL.
 - **Waste and radiation feel unimportant:** after the 2026-11-15 retune they almost never end a mission (oxygen and food carry the pressure); raise waste daily or the flare dose if playtests show it.
 - **Every sol has an event, which may overwhelm young players:** Sol 215 is calm; watch for it in the P6.1 playtest.
+- **Choices feel disconnected from their cost:** with no numbers in the scene, children may not link a card to the meter it changed. Watch it in P2.8 and P6.1; P2.11 decides what to show instead.
+- **Balance has little headroom:** after the coin cut, balanced wins 71.1% (target 70-85%). Re-run `npm run sim` after any content change.
 - **Polish crowds out mechanics:** Phases 0-2 are the minimum submission.
 - **Phaser bundle size:** lazy-loaded; the landing page has no Phaser.
 - **The canvas excludes some players:** the cards stay primary, and the events panel narrates.

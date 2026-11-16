@@ -11,9 +11,10 @@ description: Check and retune Martian Odyssey game balance with the headless sim
 
 | Strategy | Win rate |
 | -------- | -------- |
-| random | under 15% |
+| random | 15-35% |
+| fixRed (picks a "Fixes ..." card when there is one) | 35-60% |
 | coinRush (always the most coins) | under 10% |
-| balanced (looks at every meter) | 70-85% |
+| balanced (looks at every meter) | 85% or more |
 
 Also watch loss reasons: several meters should cause a share of losses, and no single reason should cause almost all of them.
 

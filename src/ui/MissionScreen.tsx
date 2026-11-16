@@ -1,16 +1,14 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { CHOICES_BY_ID, EVENTS_BY_ID } from '../engine';
-import type { GameState } from '../engine';
+import type { ChoiceOutlook, GameState } from '../engine';
 import { useGameStore } from '../store';
 import { ChoiceCard } from './ChoiceCard';
 import { MissionLog } from './MissionLog';
 import { PhaserGame } from './PhaserGame';
+import { OUTPOST_IMAGE } from './outpost';
 import { EventsPanel, StatusBar } from './StatusBar';
 
-const OUTPOST_IMAGE = {
-  small: `${import.meta.env.BASE_URL}assets/backgrounds/bg-outpost-960.webp`,
-  large: `${import.meta.env.BASE_URL}assets/backgrounds/bg-outpost-1920.webp`,
-};
+const NO_OUTLOOK: ChoiceOutlook = { helps: [], dangers: [], ends: null };
 
 /**
  * From `md` up everything fits one screen: the outpost picture fills it, the meters sit in the sky, and today's event
@@ -20,7 +18,13 @@ const OUTPOST_IMAGE = {
 export function MissionScreen({ game }: { game: GameState }) {
   const choose = useGameStore((s) => s.choose);
   const event = EVENTS_BY_ID.get(game.event.eventId);
+  const outlook = useGameStore((s) => s.outlook);
   const [pickedId, setPickedId] = useState<string | null>(null);
+  const outlooks = useMemo(
+    () => Object.fromEntries(game.offeredChoiceIds.map((id) => [id, outlook(id)])),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- `outlook` reads the same `game` from the store
+    [game],
+  );
 
   return (
     <section className="relative isolate flex min-h-svh flex-col">
@@ -29,7 +33,7 @@ export function MissionScreen({ game }: { game: GameState }) {
           src={OUTPOST_IMAGE.small}
           srcSet={`${OUTPOST_IMAGE.small} 960w, ${OUTPOST_IMAGE.large} 1920w`}
           sizes="100vw"
-          alt="Artist's picture of a future Mars base: tube-shaped homes, a rover and two astronauts on red, rocky ground."
+          alt={OUTPOST_IMAGE.alt}
           className="absolute inset-0 -z-10 size-full object-cover"
         />
         <PhaserGame />
@@ -55,7 +59,14 @@ export function MissionScreen({ game }: { game: GameState }) {
               </h2>
               <MissionLog history={game.history} popover />
             </div>
-            <div className="grid flex-1 grid-cols-2 gap-2 md:grid-cols-4">
+            <div
+              className="grid flex-1 grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-(--cards)"
+              style={
+                {
+                  '--cards': `repeat(${Math.max(4, game.offeredChoiceIds.length)}, minmax(0, 1fr))`,
+                } as React.CSSProperties
+              }
+            >
               {game.offeredChoiceIds.map((id) => {
                 const choice = CHOICES_BY_ID.get(id);
                 if (!choice) return null;
@@ -68,7 +79,9 @@ export function MissionScreen({ game }: { game: GameState }) {
                     flipped={pickedId === id}
                     disabled={pickedId !== null && pickedId !== id}
                     continueLabel={game.sol >= game.maxSols ? 'Finish mission' : 'Next sol'}
+                    outlook={outlooks[id] ?? NO_OUTLOOK}
                     onFlip={setPickedId}
+                    onBack={() => setPickedId(null)}
                     onChoose={(choiceId) => {
                       setPickedId(null);
                       choose(choiceId);
@@ -77,10 +90,7 @@ export function MissionScreen({ game }: { game: GameState }) {
                 );
               })}
             </div>
-            <p className="text-right text-[11px] leading-tight text-slate-300/75 md:truncate">
-              Picture: NASA artist's concept of a future Mars base (PIA23302). It is a drawing, not a photo - no one has
-              built a Mars base yet.
-            </p>
+            <p className="text-right text-[11px] leading-tight text-slate-300/75 md:truncate">{OUTPOST_IMAGE.credit}</p>
           </div>
         </div>
       </div>

@@ -1,8 +1,8 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { helpsMeter } from '../engine';
-import type { Choice, Effects, GameEvent } from '../engine';
+import { helpsMeter, METERS } from '../engine';
+import type { Choice, ChoiceOutlook, Effects, GameEvent, ResourceKey } from '../engine';
 import { CoinIcon } from './Coin';
-import { EFFECT_LABELS, formatAmount } from './labels';
+import { EFFECT_LABELS, formatAmount, LOSS_MESSAGES, RESOURCE_LABELS } from './labels';
 
 function EffectChips({ effects }: { effects: Effects }) {
   const entries = (Object.entries(effects) as [keyof Effects, number][]).filter(([, amount]) => amount !== 0);
@@ -32,6 +32,15 @@ function avoidText(choice: Choice, event: GameEvent): string {
   return `Handles: ${event.title} - does not stop it`;
 }
 
+function meterList(keys: readonly ResourceKey[], withLevel: boolean): string {
+  const names = keys.map((key) => {
+    const name = RESOURCE_LABELS[key].name;
+    if (!withLevel) return name;
+    return `${METERS[key].direction === 'higher' ? 'low' : 'high'} ${name}`;
+  });
+  return names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names.at(-1)}` : (names[0] ?? '');
+}
+
 const FACE = 'col-start-1 row-start-1 flex flex-col rounded-2xl p-3 text-left ring-2';
 const HIDE_BACKFACE = { backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' } as const;
 
@@ -45,8 +54,10 @@ export function ChoiceCard({
   flipped,
   disabled,
   continueLabel,
+  outlook,
   onFlip,
   onChoose,
+  onBack,
 }: {
   choice: Choice;
   /** The sol's event, when this card is one of its response cards. */
@@ -55,10 +66,14 @@ export function ChoiceCard({
   /** Another card is showing its lesson. */
   disabled: boolean;
   continueLabel: string;
+  outlook: ChoiceOutlook;
   onFlip: (id: string) => void;
   onChoose: (id: string) => void;
+  /** Turn the card back over to pick another one. */
+  onBack: () => void;
 }) {
   const reduceMotion = useReducedMotion();
+  const risky = outlook.ends !== null || outlook.dangers.length > 0;
   const rotate = reduceMotion ? 0 : flipped ? 180 : 0;
 
   return (
@@ -94,6 +109,14 @@ export function ChoiceCard({
                 {avoidText(choice, event)}
               </span>
             )}
+            {outlook.helps.length > 0 && (
+              <span
+                className="self-start rounded-full bg-emerald-500/25 px-2 py-0.5 text-xs font-black text-emerald-100 ring-1 ring-emerald-400 md:text-sm"
+                data-testid="helps-tag"
+              >
+                ✅ Fixes {meterList(outlook.helps, true)}!
+              </span>
+            )}
             <span className="hidden text-sm leading-snug text-slate-300 sm:block">{choice.description}</span>
             <EffectChips effects={choice.effects} />
           </motion.button>
@@ -112,15 +135,38 @@ export function ChoiceCard({
               <span aria-hidden>💡</span> Did you know?
             </span>
             <p className="text-sm leading-snug text-slate-100 md:text-base">{choice.lesson}</p>
-            <button
-              type="button"
-              autoFocus
-              onClick={() => onChoose(choice.id)}
-              className="mt-auto min-h-11 cursor-pointer self-end rounded-full bg-yellow-400 px-5 py-2 text-base font-black text-slate-950 hover:bg-yellow-300"
-              data-testid="continue"
-            >
-              {continueLabel} ➜
-            </button>
+            {risky && (
+              <p
+                className="rounded-xl bg-orange-500/20 px-2 py-1.5 text-sm font-bold leading-snug text-orange-100 ring-1 ring-orange-400"
+                data-testid="risk-warning"
+              >
+                <span aria-hidden>⚠️ </span>
+                {outlook.ends
+                  ? `Careful! If you pick this, the mission ends today. ${LOSS_MESSAGES[outlook.ends].title}`
+                  : `Heads up: ${meterList(outlook.dangers, false)} will be in the danger zone after this.`}
+              </p>
+            )}
+            <div className="mt-auto flex flex-wrap items-center justify-end gap-2">
+              {risky && (
+                <button
+                  type="button"
+                  onClick={onBack}
+                  className="min-h-11 cursor-pointer rounded-full bg-slate-700 px-4 py-2 text-base font-bold text-white ring-1 ring-slate-500 hover:bg-slate-600"
+                  data-testid="pick-another"
+                >
+                  ↩ Pick another
+                </button>
+              )}
+              <button
+                type="button"
+                autoFocus
+                onClick={() => onChoose(choice.id)}
+                className="min-h-11 cursor-pointer rounded-full bg-yellow-400 px-5 py-2 text-base font-black text-slate-950 hover:bg-yellow-300"
+                data-testid="continue"
+              >
+                {continueLabel} ➜
+              </button>
+            </div>
           </div>
         )}
       </motion.div>

@@ -31,7 +31,7 @@ When you add or change a source: update this file, `src/data/sources.ts` (shown 
 
 - **Bundled snapshot:** `src/data/space-weather.json`.
   - **Current status: REAL (DONKI, verified).** Fetched 2026-11-15 with `npm run data:fetch -- 2024-05-06 2024-05-21`: 126 flares (15 X, 108 M, 3 C) from the May 2024 storm, covering the 16 sols (Sol 215 = 2024-05-06, Sol 230 = 2024-05-21). X-class flares fall on 05-06, 05-08 to 05-12, 05-14 and 05-15.
-- **Game mapping (GAME):** a sol whose strongest flare is above X3 (the cut-off is a game number) gets the Solar Flare event (+4 mSv if no response card handles it): Sol 219 (X3.9), 220 (X5.8), 223 (X8.7) and 224 (X3.4). Otherwise the day's strongest flare adds a background dose: C 0.1, M 0.5, X 1 mSv. Sol 215 is always the calm welcome sol, so its real X4.5 flare adds the background X dose (1 mSv) instead (`config.ts`, `engine.ts`).
+- **Game mapping (GAME):** a sol whose strongest flare is above X3 (the cut-off is a game number) gets the Solar Flare event (+4 mSv if no response card handles it): Sol 219 (X3.9), 220 (X5.8), 223 (X8.7) and 224 (X3.4). Otherwise the day's strongest flare adds a background dose: C 0.05, M 0.25, X 0.5 mSv. Sol 215 is always the calm welcome sol, so its real X4.5 flare adds the background X dose (0.5 mSv) instead (`config.ts`, `engine.ts`).
 - **Attribution text:** "Solar flare data: NASA Community Coordinated Modeling Center (CCMC), DONKI."
 
 ## 2. Surface radiation baseline (REAL)
