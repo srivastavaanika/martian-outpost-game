@@ -1,0 +1,772 @@
+{
+  "meta": {
+    "source": "donki",
+    "isLive": false,
+    "verified": true,
+    "fetchedAt": "2026-11-15T21:07:20.116Z",
+    "range": {
+      "start": "2024-05-06",
+      "end": "2024-05-21"
+    },
+    "missionStartDate": "2024-05-06",
+    "note": "Snapshot of NASA DONKI solar flare (FLR) data fetched 2026-11-15."
+  },
+  "events": [
+    {
+      "date": "2024-05-06",
+      "classType": "M1.6",
+      "flareClass": "M",
+      "sourceId": "2024-05-06T00:47:00-FLR-001"
+    },
+    {
+      "date": "2024-05-06",
+      "classType": "M1.3",
+      "flareClass": "M",
+      "sourceId": "2024-05-06T05:09:00-FLR-001"
+    },
+    {
+      "date": "2024-05-06",
+      "classType": "X4.5",
+      "flareClass": "X",
+      "sourceId": "2024-05-06T05:38:00-FLR-001"
+    },
+    {
+      "date": "2024-05-06",
+      "classType": "M1.5",
+      "flareClass": "M",
+      "sourceId": "2024-05-06T09:49:00-FLR-001"
+    },
+    {
+      "date": "2024-05-06",
+      "classType": "M1.2",
+      "flareClass": "M",
+      "sourceId": "2024-05-06T21:37:00-FLR-001"
+    },
+    {
+      "date": "2024-05-06",
+      "classType": "M4.3",
+      "flareClass": "M",
+      "sourceId": "2024-05-06T21:58:00-FLR-001"
+    },
+    {
+      "date": "2024-05-07",
+      "classType": "M2.6",
+      "flareClass": "M",
+      "sourceId": "2024-05-07T00:41:00-FLR-001"
+    },
+    {
+      "date": "2024-05-07",
+      "classType": "M5.1",
+      "flareClass": "M",
+      "sourceId": "2024-05-07T05:58:00-FLR-001"
+    },
+    {
+      "date": "2024-05-07",
+      "classType": "M1.3",
+      "flareClass": "M",
+      "sourceId": "2024-05-07T08:18:00-FLR-001"
+    },
+    {
+      "date": "2024-05-07",
+      "classType": "M1.4",
+      "flareClass": "M",
+      "sourceId": "2024-05-07T08:28:00-FLR-001"
+    },
+    {
+      "date": "2024-05-07",
+      "classType": "M2.4",
+      "flareClass": "M",
+      "sourceId": "2024-05-07T11:40:00-FLR-001"
+    },
+    {
+      "date": "2024-05-07",
+      "classType": "M1.5",
+      "flareClass": "M",
+      "sourceId": "2024-05-07T12:43:00-FLR-001"
+    },
+    {
+      "date": "2024-05-07",
+      "classType": "M1.0",
+      "flareClass": "M",
+      "sourceId": "2024-05-07T13:16:00-FLR-001"
+    },
+    {
+      "date": "2024-05-07",
+      "classType": "M1.0",
+      "flareClass": "M",
+      "sourceId": "2024-05-07T13:32:00-FLR-001"
+    },
+    {
+      "date": "2024-05-07",
+      "classType": "M8.2",
+      "flareClass": "M",
+      "sourceId": "2024-05-07T16:21:00-FLR-001"
+    },
+    {
+      "date": "2024-05-07",
+      "classType": "M2.1",
+      "flareClass": "M",
+      "sourceId": "2024-05-07T19:58:00-FLR-001"
+    },
+    {
+      "date": "2024-05-07",
+      "classType": "M1.2",
+      "flareClass": "M",
+      "sourceId": "2024-05-07T20:45:00-FLR-001"
+    },
+    {
+      "date": "2024-05-07",
+      "classType": "M3.3",
+      "flareClass": "M",
+      "sourceId": "2024-05-07T21:13:00-FLR-001"
+    },
+    {
+      "date": "2024-05-07",
+      "classType": "M3.3",
+      "flareClass": "M",
+      "sourceId": "2024-05-07T21:42:00-FLR-001"
+    },
+    {
+      "date": "2024-05-07",
+      "classType": "M1.6",
+      "flareClass": "M",
+      "sourceId": "2024-05-07T22:55:00-FLR-001"
+    },
+    {
+      "date": "2024-05-08",
+      "classType": "X1.0",
+      "flareClass": "X",
+      "sourceId": "2024-05-08T01:33:00-FLR-001"
+    },
+    {
+      "date": "2024-05-08",
+      "classType": "M3.4",
+      "flareClass": "M",
+      "sourceId": "2024-05-08T02:16:00-FLR-001"
+    },
+    {
+      "date": "2024-05-08",
+      "classType": "M1.8",
+      "flareClass": "M",
+      "sourceId": "2024-05-08T03:19:00-FLR-001"
+    },
+    {
+      "date": "2024-05-08",
+      "classType": "M1.9",
+      "flareClass": "M",
+      "sourceId": "2024-05-08T03:38:00-FLR-001"
+    },
+    {
+      "date": "2024-05-08",
+      "classType": "M3.5",
+      "flareClass": "M",
+      "sourceId": "2024-05-08T04:20:00-FLR-001"
+    },
+    {
+      "date": "2024-05-08",
+      "classType": "X1.0",
+      "flareClass": "X",
+      "sourceId": "2024-05-08T04:37:00-FLR-001"
+    },
+    {
+      "date": "2024-05-08",
+      "classType": "M7.1",
+      "flareClass": "M",
+      "sourceId": "2024-05-08T06:44:00-FLR-001"
+    },
+    {
+      "date": "2024-05-08",
+      "classType": "M4.5",
+      "flareClass": "M",
+      "sourceId": "2024-05-08T07:29:00-FLR-001"
+    },
+    {
+      "date": "2024-05-08",
+      "classType": "M1.8",
+      "flareClass": "M",
+      "sourceId": "2024-05-08T09:31:00-FLR-001"
+    },
+    {
+      "date": "2024-05-08",
+      "classType": "M2.1",
+      "flareClass": "M",
+      "sourceId": "2024-05-08T09:43:00-FLR-001"
+    },
+    {
+      "date": "2024-05-08",
+      "classType": "M4.1",
+      "flareClass": "M",
+      "sourceId": "2024-05-08T11:09:00-FLR-001"
+    },
+    {
+      "date": "2024-05-08",
+      "classType": "M8.6",
+      "flareClass": "M",
+      "sourceId": "2024-05-08T11:26:00-FLR-001"
+    },
+    {
+      "date": "2024-05-08",
+      "classType": "M7.9",
+      "flareClass": "M",
+      "sourceId": "2024-05-08T17:32:00-FLR-001"
+    },
+    {
+      "date": "2024-05-08",
+      "classType": "M2.9",
+      "flareClass": "M",
+      "sourceId": "2024-05-08T18:14:00-FLR-001"
+    },
+    {
+      "date": "2024-05-08",
+      "classType": "M2.0",
+      "flareClass": "M",
+      "sourceId": "2024-05-08T19:15:00-FLR-001"
+    },
+    {
+      "date": "2024-05-08",
+      "classType": "M1.7",
+      "flareClass": "M",
+      "sourceId": "2024-05-08T20:27:00-FLR-001"
+    },
+    {
+      "date": "2024-05-08",
+      "classType": "X1.0",
+      "flareClass": "X",
+      "sourceId": "2024-05-08T21:08:00-FLR-001"
+    },
+    {
+      "date": "2024-05-08",
+      "classType": "M9.8",
+      "flareClass": "M",
+      "sourceId": "2024-05-08T22:05:00-FLR-001"
+    },
+    {
+      "date": "2024-05-09",
+      "classType": "M1.8",
+      "flareClass": "M",
+      "sourceId": "2024-05-09T00:58:00-FLR-001"
+    },
+    {
+      "date": "2024-05-09",
+      "classType": "M4.0",
+      "flareClass": "M",
+      "sourceId": "2024-05-09T03:07:00-FLR-001"
+    },
+    {
+      "date": "2024-05-09",
+      "classType": "M4.5",
+      "flareClass": "M",
+      "sourceId": "2024-05-09T03:23:00-FLR-001"
+    },
+    {
+      "date": "2024-05-09",
+      "classType": "M1.7",
+      "flareClass": "M",
+      "sourceId": "2024-05-09T04:44:00-FLR-001"
+    },
+    {
+      "date": "2024-05-09",
+      "classType": "M1.2",
+      "flareClass": "M",
+      "sourceId": "2024-05-09T05:35:00-FLR-001"
+    },
+    {
+      "date": "2024-05-09",
+      "classType": "M2.3",
+      "flareClass": "M",
+      "sourceId": "2024-05-09T06:03:00-FLR-001"
+    },
+    {
+      "date": "2024-05-09",
+      "classType": "M2.4",
+      "flareClass": "M",
+      "sourceId": "2024-05-09T06:24:00-FLR-001"
+    },
+    {
+      "date": "2024-05-09",
+      "classType": "M1.2",
+      "flareClass": "M",
+      "sourceId": "2024-05-09T07:54:00-FLR-001"
+    },
+    {
+      "date": "2024-05-09",
+      "classType": "M2.1",
+      "flareClass": "M",
+      "sourceId": "2024-05-09T08:30:00-FLR-001"
+    },
+    {
+      "date": "2024-05-09",
+      "classType": "X2.2",
+      "flareClass": "X",
+      "sourceId": "2024-05-09T08:45:00-FLR-001"
+    },
+    {
+      "date": "2024-05-09",
+      "classType": "M3.1",
+      "flareClass": "M",
+      "sourceId": "2024-05-09T11:52:00-FLR-001"
+    },
+    {
+      "date": "2024-05-09",
+      "classType": "M2.9",
+      "flareClass": "M",
+      "sourceId": "2024-05-09T12:05:00-FLR-001"
+    },
+    {
+      "date": "2024-05-09",
+      "classType": "M3.7",
+      "flareClass": "M",
+      "sourceId": "2024-05-09T13:16:00-FLR-001"
+    },
+    {
+      "date": "2024-05-09",
+      "classType": "M1.0",
+      "flareClass": "M",
+      "sourceId": "2024-05-09T14:01:00-FLR-001"
+    },
+    {
+      "date": "2024-05-09",
+      "classType": "X1.1",
+      "flareClass": "X",
+      "sourceId": "2024-05-09T17:23:00-FLR-001"
+    },
+    {
+      "date": "2024-05-09",
+      "classType": "M1.0",
+      "flareClass": "M",
+      "sourceId": "2024-05-09T21:15:00-FLR-001"
+    },
+    {
+      "date": "2024-05-09",
+      "classType": "M1.0",
+      "flareClass": "M",
+      "sourceId": "2024-05-09T22:08:00-FLR-001"
+    },
+    {
+      "date": "2024-05-09",
+      "classType": "M2.6",
+      "flareClass": "M",
+      "sourceId": "2024-05-09T22:24:00-FLR-001"
+    },
+    {
+      "date": "2024-05-09",
+      "classType": "M1.2",
+      "flareClass": "M",
+      "sourceId": "2024-05-09T23:04:00-FLR-001"
+    },
+    {
+      "date": "2024-05-09",
+      "classType": "M1.5",
+      "flareClass": "M",
+      "sourceId": "2024-05-09T23:44:00-FLR-001"
+    },
+    {
+      "date": "2024-05-10",
+      "classType": "M1.3",
+      "flareClass": "M",
+      "sourceId": "2024-05-10T00:10:00-FLR-001"
+    },
+    {
+      "date": "2024-05-10",
+      "classType": "M1.4",
+      "flareClass": "M",
+      "sourceId": "2024-05-10T03:15:00-FLR-001"
+    },
+    {
+      "date": "2024-05-10",
+      "classType": "M1.3",
+      "flareClass": "M",
+      "sourceId": "2024-05-10T06:14:00-FLR-001"
+    },
+    {
+      "date": "2024-05-10",
+      "classType": "X3.9",
+      "flareClass": "X",
+      "sourceId": "2024-05-10T06:27:00-FLR-001"
+    },
+    {
+      "date": "2024-05-10",
+      "classType": "M2.2",
+      "flareClass": "M",
+      "sourceId": "2024-05-10T10:10:00-FLR-001"
+    },
+    {
+      "date": "2024-05-10",
+      "classType": "M5.9",
+      "flareClass": "M",
+      "sourceId": "2024-05-10T13:58:00-FLR-001"
+    },
+    {
+      "date": "2024-05-10",
+      "classType": "M1.2",
+      "flareClass": "M",
+      "sourceId": "2024-05-10T17:14:00-FLR-001"
+    },
+    {
+      "date": "2024-05-10",
+      "classType": "M1.2",
+      "flareClass": "M",
+      "sourceId": "2024-05-10T17:54:00-FLR-001"
+    },
+    {
+      "date": "2024-05-10",
+      "classType": "M1.1",
+      "flareClass": "M",
+      "sourceId": "2024-05-10T18:26:00-FLR-001"
+    },
+    {
+      "date": "2024-05-10",
+      "classType": "M1.7",
+      "flareClass": "M",
+      "sourceId": "2024-05-10T18:38:00-FLR-001"
+    },
+    {
+      "date": "2024-05-10",
+      "classType": "M2.0",
+      "flareClass": "M",
+      "sourceId": "2024-05-10T18:57:00-FLR-001"
+    },
+    {
+      "date": "2024-05-10",
+      "classType": "M1.1",
+      "flareClass": "M",
+      "sourceId": "2024-05-10T19:35:00-FLR-001"
+    },
+    {
+      "date": "2024-05-10",
+      "classType": "M1.9",
+      "flareClass": "M",
+      "sourceId": "2024-05-10T19:56:00-FLR-001"
+    },
+    {
+      "date": "2024-05-10",
+      "classType": "M3.8",
+      "flareClass": "M",
+      "sourceId": "2024-05-10T20:59:00-FLR-001"
+    },
+    {
+      "date": "2024-05-10",
+      "classType": "M2.4",
+      "flareClass": "M",
+      "sourceId": "2024-05-10T21:15:00-FLR-001"
+    },
+    {
+      "date": "2024-05-11",
+      "classType": "X5.8",
+      "flareClass": "X",
+      "sourceId": "2024-05-11T01:10:00-FLR-001"
+    },
+    {
+      "date": "2024-05-11",
+      "classType": "M1.3",
+      "flareClass": "M",
+      "sourceId": "2024-05-11T04:28:00-FLR-001"
+    },
+    {
+      "date": "2024-05-11",
+      "classType": "M1.2",
+      "flareClass": "M",
+      "sourceId": "2024-05-11T07:26:00-FLR-001"
+    },
+    {
+      "date": "2024-05-11",
+      "classType": "M1.3",
+      "flareClass": "M",
+      "sourceId": "2024-05-11T08:14:00-FLR-001"
+    },
+    {
+      "date": "2024-05-11",
+      "classType": "M1.4",
+      "flareClass": "M",
+      "sourceId": "2024-05-11T08:45:00-FLR-001"
+    },
+    {
+      "date": "2024-05-11",
+      "classType": "M1.7",
+      "flareClass": "M",
+      "sourceId": "2024-05-11T09:05:00-FLR-001"
+    },
+    {
+      "date": "2024-05-11",
+      "classType": "M3.1",
+      "flareClass": "M",
+      "sourceId": "2024-05-11T10:03:00-FLR-001"
+    },
+    {
+      "date": "2024-05-11",
+      "classType": "M1.6",
+      "flareClass": "M",
+      "sourceId": "2024-05-11T10:53:00-FLR-001"
+    },
+    {
+      "date": "2024-05-11",
+      "classType": "X1.5",
+      "flareClass": "X",
+      "sourceId": "2024-05-11T11:15:00-FLR-001"
+    },
+    {
+      "date": "2024-05-11",
+      "classType": "M1.7",
+      "flareClass": "M",
+      "sourceId": "2024-05-11T13:45:00-FLR-001"
+    },
+    {
+      "date": "2024-05-11",
+      "classType": "M8.8",
+      "flareClass": "M",
+      "sourceId": "2024-05-11T14:46:00-FLR-001"
+    },
+    {
+      "date": "2024-05-11",
+      "classType": "M2.9",
+      "flareClass": "M",
+      "sourceId": "2024-05-11T16:27:00-FLR-001"
+    },
+    {
+      "date": "2024-05-11",
+      "classType": "M1.2",
+      "flareClass": "M",
+      "sourceId": "2024-05-11T20:32:00-FLR-001"
+    },
+    {
+      "date": "2024-05-12",
+      "classType": "M3.2",
+      "flareClass": "M",
+      "sourceId": "2024-05-12T00:41:00-FLR-001"
+    },
+    {
+      "date": "2024-05-12",
+      "classType": "M2.4",
+      "flareClass": "M",
+      "sourceId": "2024-05-12T05:37:00-FLR-001"
+    },
+    {
+      "date": "2024-05-12",
+      "classType": "M1.6",
+      "flareClass": "M",
+      "sourceId": "2024-05-12T12:27:00-FLR-001"
+    },
+    {
+      "date": "2024-05-12",
+      "classType": "M1.0",
+      "flareClass": "M",
+      "sourceId": "2024-05-12T13:40:00-FLR-001"
+    },
+    {
+      "date": "2024-05-12",
+      "classType": "M1.5",
+      "flareClass": "M",
+      "sourceId": "2024-05-12T13:49:00-FLR-001"
+    },
+    {
+      "date": "2024-05-12",
+      "classType": "X1.0",
+      "flareClass": "X",
+      "sourceId": "2024-05-12T16:11:00-FLR-001"
+    },
+    {
+      "date": "2024-05-12",
+      "classType": "M4.8",
+      "flareClass": "M",
+      "sourceId": "2024-05-12T20:17:00-FLR-001"
+    },
+    {
+      "date": "2024-05-12",
+      "classType": "M1.1",
+      "flareClass": "M",
+      "sourceId": "2024-05-12T22:01:00-FLR-001"
+    },
+    {
+      "date": "2024-05-12",
+      "classType": "M1.1",
+      "flareClass": "M",
+      "sourceId": "2024-05-12T22:14:00-FLR-001"
+    },
+    {
+      "date": "2024-05-12",
+      "classType": "M1.0",
+      "flareClass": "M",
+      "sourceId": "2024-05-12T23:00:00-FLR-001"
+    },
+    {
+      "date": "2024-05-13",
+      "classType": "M1.2",
+      "flareClass": "M",
+      "sourceId": "2024-05-13T01:23:00-FLR-001"
+    },
+    {
+      "date": "2024-05-13",
+      "classType": "M1.2",
+      "flareClass": "M",
+      "sourceId": "2024-05-13T08:06:00-FLR-001"
+    },
+    {
+      "date": "2024-05-13",
+      "classType": "M1.4",
+      "flareClass": "M",
+      "sourceId": "2024-05-13T08:23:00-FLR-001"
+    },
+    {
+      "date": "2024-05-13",
+      "classType": "M4.9",
+      "flareClass": "M",
+      "sourceId": "2024-05-13T08:47:00-FLR-001"
+    },
+    {
+      "date": "2024-05-13",
+      "classType": "M6.6",
+      "flareClass": "M",
+      "sourceId": "2024-05-13T09:36:00-FLR-001"
+    },
+    {
+      "date": "2024-05-13",
+      "classType": "M3.7",
+      "flareClass": "M",
+      "sourceId": "2024-05-13T12:56:00-FLR-001"
+    },
+    {
+      "date": "2024-05-13",
+      "classType": "M1.4",
+      "flareClass": "M",
+      "sourceId": "2024-05-13T14:02:00-FLR-001"
+    },
+    {
+      "date": "2024-05-13",
+      "classType": "M1.5",
+      "flareClass": "M",
+      "sourceId": "2024-05-13T14:12:00-FLR-001"
+    },
+    {
+      "date": "2024-05-13",
+      "classType": "M1.0",
+      "flareClass": "M",
+      "sourceId": "2024-05-13T17:32:00-FLR-001"
+    },
+    {
+      "date": "2024-05-13",
+      "classType": "M1.0",
+      "flareClass": "M",
+      "sourceId": "2024-05-13T18:38:00-FLR-001"
+    },
+    {
+      "date": "2024-05-13",
+      "classType": "M1.5",
+      "flareClass": "M",
+      "sourceId": "2024-05-13T21:48:00-FLR-001"
+    },
+    {
+      "date": "2024-05-14",
+      "classType": "M2.5",
+      "flareClass": "M",
+      "sourceId": "2024-05-14T01:23:00-FLR-001"
+    },
+    {
+      "date": "2024-05-14",
+      "classType": "X1.7",
+      "flareClass": "X",
+      "sourceId": "2024-05-14T02:03:00-FLR-001"
+    },
+    {
+      "date": "2024-05-14",
+      "classType": "C6.5",
+      "flareClass": "C",
+      "sourceId": "2024-05-14T04:05:00-FLR-001"
+    },
+    {
+      "date": "2024-05-14",
+      "classType": "X1.2",
+      "flareClass": "X",
+      "sourceId": "2024-05-14T12:40:00-FLR-001"
+    },
+    {
+      "date": "2024-05-14",
+      "classType": "X8.7",
+      "flareClass": "X",
+      "sourceId": "2024-05-14T16:46:00-FLR-001"
+    },
+    {
+      "date": "2024-05-14",
+      "classType": "M4.4",
+      "flareClass": "M",
+      "sourceId": "2024-05-14T17:25:00-FLR-001"
+    },
+    {
+      "date": "2024-05-15",
+      "classType": "X3.4",
+      "flareClass": "X",
+      "sourceId": "2024-05-15T08:18:00-FLR-001"
+    },
+    {
+      "date": "2024-05-15",
+      "classType": "M3.5",
+      "flareClass": "M",
+      "sourceId": "2024-05-15T09:50:00-FLR-001"
+    },
+    {
+      "date": "2024-05-15",
+      "classType": "M2.9",
+      "flareClass": "M",
+      "sourceId": "2024-05-15T13:56:00-FLR-001"
+    },
+    {
+      "date": "2024-05-15",
+      "classType": "M3.2",
+      "flareClass": "M",
+      "sourceId": "2024-05-15T14:10:00-FLR-001"
+    },
+    {
+      "date": "2024-05-15",
+      "classType": "X2.9",
+      "flareClass": "X",
+      "sourceId": "2024-05-15T14:20:00-FLR-001"
+    },
+    {
+      "date": "2024-05-16",
+      "classType": "M1.0",
+      "flareClass": "M",
+      "sourceId": "2024-05-16T07:50:00-FLR-001"
+    },
+    {
+      "date": "2024-05-17",
+      "classType": "M7.2",
+      "flareClass": "M",
+      "sourceId": "2024-05-17T20:33:00-FLR-001"
+    },
+    {
+      "date": "2024-05-19",
+      "classType": "M1.9",
+      "flareClass": "M",
+      "sourceId": "2024-05-19T13:37:00-FLR-001"
+    },
+    {
+      "date": "2024-05-19",
+      "classType": "M2.5",
+      "flareClass": "M",
+      "sourceId": "2024-05-19T17:47:00-FLR-001"
+    },
+    {
+      "date": "2024-05-19",
+      "classType": "M1.6",
+      "flareClass": "M",
+      "sourceId": "2024-05-19T21:53:00-FLR-001"
+    },
+    {
+      "date": "2024-05-21",
+      "classType": "C4.8",
+      "flareClass": "C",
+      "sourceId": "2024-05-21T07:20:00-FLR-001"
+    },
+    {
+      "date": "2024-05-21",
+      "classType": "C6.6",
+      "flareClass": "C",
+      "sourceId": "2024-05-21T14:00:00-FLR-001"
+    },
+    {
+      "date": "2024-05-21",
+      "classType": "M1.9",
+      "flareClass": "M",
+      "sourceId": "2024-05-21T19:19:00-FLR-001"
+    }
+  ]
+}
