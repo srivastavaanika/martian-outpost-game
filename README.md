@@ -16,14 +16,23 @@ npm run dev
 
 ## Scripts
 
-| Command              | What it does                                                                     |
-| -------------------- | -------------------------------------------------------------------------------- |
-| `npm run dev`        | Dev server with hot reload                                                       |
-| `npm run check`      | Type-check, lint and unit tests                                                  |
-| `npm run sim`        | Play thousands of simulated games and print win rates per strategy               |
-| `npm run data:fetch` | Download a fresh solar-flare snapshot from NASA DONKI                            |
-| `npm run test:e2e`   | Playwright smoke test (run `npx playwright install chromium` once)               |
-| `npm run build`      | Production build in `dist/` (static - deploy to GitHub Pages, Netlify or Vercel) |
+| Command              | What it does                                                                          |
+| -------------------- | ------------------------------------------------------------------------------------- |
+| `npm run dev`        | Dev server with hot reload                                                            |
+| `npm run check`      | Type-check, lint and unit tests                                                       |
+| `npm run sim`        | Play thousands of simulated games and print win rates per strategy                    |
+| `npm run data:fetch` | Download a fresh solar-flare snapshot from NASA DONKI                                 |
+| `npm run test:e2e`   | Playwright smoke test (run `npx playwright install chromium` once)                    |
+| `npm run build`      | Production build in `dist/` (static - deploy to GitHub Pages, Netlify or Vercel)      |
+| `npm run deploy`     | Build and publish `dist/` to the `gh-pages` branch by hand (needs GitHub push access) |
+
+## Publish to GitHub Pages
+
+Live site: https://srivastavaanika.github.io/martian-outpost-game/
+
+- Every push to `main` runs `.github/workflows/deploy.yml`: `npm run check`, `npm run build`, then publishes `dist/` to the `gh-pages` branch. It can also be started by hand from the Actions tab.
+- One-time setup on GitHub: **Settings → Pages → Build and deployment → Deploy from a branch → `gh-pages` / root**, and **Settings → Actions → General → Workflow permissions → Read and write**.
+- The build uses a relative base (`base: './'` in `vite.config.ts`), so it works under `/martian-outpost-game/` without changes.
 
 ## Real NASA data
 
