@@ -3,33 +3,16 @@ import type { EventEffect, SceneCue } from './cues';
 import { anchorOf, DESIGN } from './layout';
 import type { ModuleId } from './layout';
 
-/** Visual timing and placement only; every number shown comes from the cue. */
-const TIMING = { avoided: 250, deltas: 550, deltaStagger: 110, eventAfterReport: 1500, hold: 1600 } as const;
-
-/** Vertical offset of each module's floating numbers, so neighbouring habitats never overlap. */
-const LABEL_DY: Record<ModuleId, number> = {
-  oxygen: -50,
-  water: -16,
-  food: -50,
-  waste: -16,
-  coins: -84,
-  radiation: -64,
-  power: -6,
-  rover: -52,
-  drill: -52,
-};
-
-const FONT = 'Nunito, system-ui, sans-serif';
-const COLORS = { gain: '#6ee7b7', cost: '#fca5a5', saved: '#86efac', label: '#fde68a', text: '#f8fafc' } as const;
-
 function anchor(module: ModuleId | 'sky'): { x: number; y: number } {
   return module === 'sky' ? { x: DESIGN.width / 2, y: 150 } : anchorOf(module);
 }
 
-/** Plays one sol's cues on a fresh layer; a new `play` (or `stop`) cancels whatever is still running. */
+/**
+ * Plays one sol's visual effects (flare glow, dust, snow ...) on a fresh layer; a new `play` (or `stop`)
+ * cancels whatever is still running. Numbers and labels are not drawn: the meters and the mission log show them.
+ */
 export class CuePlayer {
   private layer: Phaser.GameObjects.Container | null = null;
-  private timers: Phaser.Time.TimerEvent[] = [];
 
   constructor(
     private readonly scene: Phaser.Scene,
@@ -40,21 +23,13 @@ export class CuePlayer {
     this.stop();
     const layer = this.scene.add.container(0, 0);
     this.layer = layer;
-
-    const hasReport = cues.some((c) => c.type !== 'event-start' && c.type !== 'flare');
-    let deltaIndex = 0;
     for (const cue of cues) {
-      let at = 0;
-      if (cue.type === 'impact-avoided') at = TIMING.avoided;
-      if (cue.type === 'resource-delta') at = TIMING.deltas + TIMING.deltaStagger * deltaIndex++;
-      if (cue.type === 'event-start' || cue.type === 'flare') at = hasReport ? TIMING.eventAfterReport : 0;
-      this.timers.push(this.scene.time.delayedCall(at, () => this.playCue(cue, layer)));
+      if (cue.type === 'flare') this.flare(layer, cue.strength);
+      if (cue.type === 'event-start') this.eventEffect(layer, cue.effect, anchor(cue.module));
     }
   }
 
   stop(): void {
-    for (const timer of this.timers) timer.remove();
-    this.timers = [];
     if (this.layer) {
       this.scene.tweens.killTweensOf(this.layer.getAll());
       this.layer.destroy(true);
@@ -62,80 +37,14 @@ export class CuePlayer {
     }
   }
 
-  private playCue(cue: SceneCue, layer: Phaser.GameObjects.Container): void {
-    switch (cue.type) {
-      case 'crew-outside': {
-        const { x, y } = anchor(cue.module);
-        this.label(layer, x, y + 46, '🧑‍🚀 Crew outside', COLORS.text, { bob: true });
-        break;
-      }
-      case 'impact-avoided': {
-        const { x, y } = anchor(cue.module);
-        this.label(layer, x, y + 76, cue.text, COLORS.saved, { rise: 0 });
-        break;
-      }
-      case 'resource-delta': {
-        const { x, y } = anchor(cue.module);
-        this.label(layer, x, y + LABEL_DY[cue.module], cue.text, cue.gain ? COLORS.gain : COLORS.cost, { rise: 22 });
-        break;
-      }
-      case 'flare':
-        this.flare(layer, cue.strength, cue.text);
-        break;
-      case 'event-start':
-        this.eventEffect(layer, cue.effect, anchor(cue.module));
-        break;
-    }
-  }
-
-  /** A floating text pill. Reduced motion: it appears in place and disappears, with no tween. */
-  private label(
-    layer: Phaser.GameObjects.Container,
-    x: number,
-    y: number,
-    text: string,
-    color: string,
-    { rise = 18, bob = false, size = 15 }: { rise?: number; bob?: boolean; size?: number } = {},
-  ): void {
-    const t = this.scene.add
-      .text(x, y, text, {
-        fontFamily: FONT,
-        fontSize: `${size}px`,
-        fontStyle: '900',
-        color,
-        backgroundColor: 'rgba(2,6,23,0.78)',
-        padding: { x: 6, y: 3 },
-      })
-      .setOrigin(0.5)
-      .setResolution(2);
-    layer.add(t);
-    if (this.reducedMotion) {
-      this.scene.time.delayedCall(TIMING.hold + 400, () => t.destroy());
-      return;
-    }
-    t.setAlpha(0).setScale(0.8);
-    this.scene.tweens.add({ targets: t, alpha: 1, scale: 1, duration: 200, ease: 'Back.Out' });
-    if (bob) this.scene.tweens.add({ targets: t, y: y - 6, duration: 450, yoyo: true, repeat: 2, ease: 'Sine.InOut' });
-    this.scene.tweens.add({
-      targets: t,
-      y: y - rise,
-      alpha: 0,
-      delay: TIMING.hold,
-      duration: 500,
-      onComplete: () => t.destroy(),
-    });
-  }
-
   /** One soft flash (never a strobe) for the flare event; a faint one for a background flare. */
-  private flare(layer: Phaser.GameObjects.Container, strength: 'event' | 'background', text: string): void {
-    const strong = strength === 'event';
-    this.label(layer, DESIGN.width / 2, strong ? 190 : 205, text, COLORS.label, { rise: 0, size: strong ? 18 : 14 });
+  private flare(layer: Phaser.GameObjects.Container, strength: 'event' | 'background'): void {
     if (this.reducedMotion) return;
     const glow = this.scene.add.rectangle(0, 0, DESIGN.width, DESIGN.height, 0xfff1c2).setOrigin(0).setAlpha(0);
     layer.addAt(glow, 0);
     this.scene.tweens.add({
       targets: glow,
-      alpha: strong ? 0.45 : 0.16,
+      alpha: strength === 'event' ? 0.45 : 0.16,
       duration: 450,
       yoyo: true,
       ease: 'Sine.InOut',

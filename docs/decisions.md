@@ -2,6 +2,18 @@
 
 Add newest entries at the top. Keep each to a few lines: context, decision, consequence.
 
+## 2026-11-15 - Scene shows visual effects only, no floating numbers
+
+- **Context:** feedback - the numbers flashing in the middle of the picture distract from the animation.
+- **Decision:** `CuePlayer` plays only the visual effects: the flare glow and the event effects (dust, snow, drip, wilt, sand, sparks, crack, sparkle). It no longer draws the meter-change, "Saved", "Crew outside" or flare-class labels, and the event effect now starts straight away instead of after them. The cue data in `cues.ts` (values and narration) is unchanged and still tested, so the labels can come back or feed a screen-reader live region later.
+- **Consequence:** players read changes on the meters and in the mission log; the real flare class and date stay in the event panel and the mission log.
+
+## 2026-11-15 - Coins earned more slowly
+
+- **Context:** feedback - coins pile up too fast. After the 1.5x raise, four coin cards reached the goal of 100, and balanced play averaged 125 coins (coin-rush 162).
+- **Decision:** every coin reward cut to about 0.8x; the goal stays 100. Regular cards: experiment 22 to 18, rover 38 to 30, send data 30 to 24, supply drop 4 to 3. Response cards: finish tasks first 9 to 6, leave panels out 6 to 4, toss the plants 9 to 6, rescue the gear 8 to 6, leave it stuck 8 to 6, tow it out 15 to 12, move the drill 6 to 4, celebrate and tell Earth 30 to 24, high-five 18 to 14. A deeper cut (about 0.7x, experiment 16 / rover 28 / send data 22) dropped balanced to 66.2%, below target.
+- **Consequence:** balanced 81.2% to 71.1% (avg coins 125 to 115), random 4.1% to 2.2%, coinRush 0% to 0%. Balanced now takes more coin cards, so oxygen losses rise (16.5% to 23.6%). Balanced sits at the bottom of its 70-85% target; if it needs more room, ease oxygen daily use rather than raising coins.
+
 ## 2026-11-15 - The .plan.md is the source of truth for the phased plan
 
 - **Context:** `docs/roadmap-2d.md` had replaced `.cursor/plans/new_game_layout_4b40858c.plan.md` (S0.1), but the user treats the plan file as the source of truth, and two copies drift apart.

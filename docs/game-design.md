@@ -92,19 +92,19 @@ Regular cards are in `src/engine/choices.ts` (14 cards); response cards are in `
 
 | Strategy | Target win rate | Current (2000 games, DONKI data, 2026-11-15) |
 | -------- | --------------- | -------------------------------------------- |
-| random | < 15% | 4.1% |
+| random | < 15% | 2.2% |
 | coinRush (always the most coins) | < 10% | 0.0% |
-| balanced (looks at every meter) | 70-85% | 81.2% |
+| balanced (looks at every meter) | 70-85% | 71.1% |
 
 Full table:
 
 | strategy | win | lost: power | lost: oxygen | lost: water | lost: food | lost: radiation | lost: waste | lost: coins | avg dose mSv | avg coins |
 | -------- | --- | ----------- | ------------ | ----------- | ---------- | --------------- | ----------- | ----------- | ------------ | --------- |
-| random | 4.1% | 34.2% | 3.6% | 0.3% | 55.8% | 0.0% | 0.0% | 2.1% | 23.3 | 104 |
-| coinRush | 0.0% | 57.1% | 0.0% | 0.0% | 42.9% | 0.0% | 0.0% | 0.0% | 16.8 | 162 |
-| balanced | 81.2% | 0.1% | 16.5% | 1.1% | 0.2% | 0.0% | 0.0% | 0.9% | 33.8 | 125 |
+| random | 2.2% | 34.2% | 3.6% | 0.3% | 55.8% | 0.0% | 0.0% | 4.0% | 23.3 | 81 |
+| coinRush | 0.0% | 57.1% | 0.0% | 0.0% | 42.9% | 0.0% | 0.0% | 0.0% | 16.8 | 130 |
+| balanced | 71.1% | 0.4% | 23.6% | 2.1% | 0.4% | 0.0% | 0.0% | 2.4% | 34.0 | 115 |
 
-Latest retune (see `docs/decisions.md`, 2026-11-15, "Start values, coins and flare cut-off"): new start values, flare event only above X3, coins about 1.5x, food daily -4 to -1 with warning 4 kg and max 40 kg, oxygen daily -7 to -9. Waste and radiation now rarely end a mission.
+Latest retune (see `docs/decisions.md`, 2026-11-15, "Coins earned more slowly"): every coin reward cut to about 0.8x (experiment 18, rover 30, send data 24), so the goal of 100 takes more of the mission to reach. Before that: new start values, flare event only above X3, food daily -1, oxygen daily -9. Waste and radiation rarely end a mission.
 
 ## Ideas backlog
 
